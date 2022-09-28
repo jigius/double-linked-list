@@ -32,7 +32,7 @@ interface ListInterface
      * @param HashableInterface $a
      * @param HashableInterface $b
      */
-    public function exchanged(HashableInterface $a, HashableInterface $b);
+    public function exchange(HashableInterface $a, HashableInterface $b);
     
     /**
      * Returns the first node of the list

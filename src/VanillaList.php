@@ -93,7 +93,7 @@ final class VanillaList implements ListInterface
      * @inheritDoc
      * @throw OutOfBoundsException
      */
-    public function exchanged(HashableInterface $a, HashableInterface $b): void
+    public function exchange(HashableInterface $a, HashableInterface $b): void
     {
         $ha = $a->hash();
         $hb = $b->hash();
