@@ -65,9 +65,8 @@ final class VanillaList implements ListInterface
     /**
      * @inheritDoc
      */
-    public function without(HashableInterface $payload): void
+    public function without(string $hash): void
     {
-        $hash = $payload->hash();
         if (isset($this->i['hashes'][$hash])) {
             $node = $this->i['hashes'][$hash];
             /**
@@ -93,22 +92,20 @@ final class VanillaList implements ListInterface
      * @inheritDoc
      * @throw OutOfBoundsException
      */
-    public function exchange(HashableInterface $a, HashableInterface $b): void
+    public function exchange(string $hashOne, string $hashTwo): void
     {
-        $ha = $a->hash();
-        $hb = $b->hash();
-        if ($ha === $hb) {
+        if ($hashOne === $hashTwo) {
             return;
         }
-        if (!isset($this->i['hashes'][$ha]) || !isset($this->i['hashes'][$hb])) {
+        if (!isset($this->i['hashes'][$hashOne]) || !isset($this->i['hashes'][$hashTwo])) {
             throw new OutOfBoundsException();
         }
-        $t = $this->i['hashes'][$ha]->payload();
-        $this->i['hashes'][$ha]->mutatePayload($this->i['hashes'][$hb]->payload());
-        $this->i['hashes'][$hb]->mutatePayload($t);
-        $nodeA = $this->i['hashes'][$ha];
-        $this->i['hashes'][$ha] = $this->i['hashes'][$hb];
-        $this->i['hashes'][$hb] = $nodeA;
+        $t = $this->i['hashes'][$hashOne]->payload();
+        $this->i['hashes'][$hashOne]->mutatePayload($this->i['hashes'][$hashTwo]->payload());
+        $this->i['hashes'][$hashTwo]->mutatePayload($t);
+        $nodeOne = $this->i['hashes'][$hashOne];
+        $this->i['hashes'][$hashOne] = $this->i['hashes'][$hashTwo];
+        $this->i['hashes'][$hashTwo] = $nodeOne;
     }
     
     /**

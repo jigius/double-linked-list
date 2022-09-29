@@ -23,16 +23,16 @@ interface ListInterface
     
     /**
      * Removes a node from the list
-     * @param HashableInterface $payload
+     * @param string $hash
      */
-    public function without(HashableInterface $payload): void;
+    public function without(string $hash): void;
     
     /**
      * Does the exchanging places
-     * @param HashableInterface $a
-     * @param HashableInterface $b
+     * @param string $hashOne
+     * @param string $hashTwo
      */
-    public function exchange(HashableInterface $a, HashableInterface $b);
+    public function exchange(string $hashOne, string $hashTwo);
     
     /**
      * Returns the first node of the list
