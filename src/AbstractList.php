@@ -13,7 +13,10 @@ namespace DoubleLinkedList;
 use Exception;
 use OutOfBoundsException;
 
-final class VanillaList implements ListInterface
+/**
+ * Abstract implementation of List contract
+ */
+abstract class AbstractList implements ListInterface
 {
     /**
      * @var array
@@ -97,16 +100,9 @@ final class VanillaList implements ListInterface
     }
     
     /**
-     * @param string $hash
-     * @return HashableInterface
+     * @inheritDoc
      */
-    public function fetch(string $hash): HashableInterface
-    {
-        if (!$this->known($hash)) {
-            throw new OutOfBoundsException("there is no value for a defined hash");
-        }
-        return $this->i['hashes'][$hash]->payload();
-    }
+    abstract public function fetch(string $hash): HashableInterface;
     
     /**
      * @inheritDoc
