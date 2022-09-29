@@ -21,11 +21,11 @@ abstract class AbstractList implements ListInterface
     /**
      * @var array
      */
-    private array $i;
+    protected array $i;
     /**
      * @var NodeInterface
      */
-    private NodeInterface $node;
+    protected NodeInterface $node;
     
     /**
      * Cntr
