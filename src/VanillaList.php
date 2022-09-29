@@ -90,6 +90,26 @@ final class VanillaList implements ListInterface
     
     /**
      * @inheritDoc
+     */
+    public function known(string $hash): bool
+    {
+        return isset($this->i['hashes'][$hash]);
+    }
+    
+    /**
+     * @param string $hash
+     * @return HashableInterface
+     */
+    public function fetch(string $hash): HashableInterface
+    {
+        if (!$this->known($hash)) {
+            throw new OutOfBoundsException("there is no value for a defined hash");
+        }
+        return $this->i['hashes'][$hash]->payload();
+    }
+    
+    /**
+     * @inheritDoc
      * @throw OutOfBoundsException
      */
     public function exchange(string $hashOne, string $hashTwo): void
@@ -97,10 +117,10 @@ final class VanillaList implements ListInterface
         if ($hashOne === $hashTwo) {
             return;
         }
-        if (!isset($this->i['hashes'][$hashOne]) || !isset($this->i['hashes'][$hashTwo])) {
+        if (!$this->known($hashOne) || !$this->known($hashTwo)) {
             throw new OutOfBoundsException();
         }
-        $t = $this->i['hashes'][$hashOne]->payload();
+        $t = $this->fetch($hashOne);
         $this->i['hashes'][$hashOne]->mutatePayload($this->i['hashes'][$hashTwo]->payload());
         $this->i['hashes'][$hashTwo]->mutatePayload($t);
         $nodeOne = $this->i['hashes'][$hashOne];

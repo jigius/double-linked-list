@@ -35,6 +35,20 @@ interface ListInterface
     public function exchange(string $hashOne, string $hashTwo);
     
     /**
+     * Checks if there is a node with a defined hash
+     * @param string $hash
+     * @return bool
+     */
+    public function known(string $hash): bool;
+    
+    /**
+     * Returns a value data with a defined hash
+     * @param string $hash
+     * @return HashableInterface
+     */
+    public function fetch(string $hash): HashableInterface;
+    
+    /**
      * Returns the first node of the list
      * @return NodeInterface
      * @throw OutOfBoundException
