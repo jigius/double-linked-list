@@ -16,10 +16,11 @@ namespace DoubleLinkedList;
 interface ListInterface
 {
     /**
-     * Appends a value data into the list
+     * Appends or update a value data into the list
      * @param HashableInterface $payload
+     * @param string|null $after - if defined - puts a node after a node with defined hash, else - puts at the tail
      */
-    public function with(HashableInterface $payload): void;
+    public function with(HashableInterface $payload, ?string $after = null): void;
     
     /**
      * Removes a node from the list

@@ -12,6 +12,7 @@ namespace DoubleLinkedList;
 
 use Exception;
 use OutOfBoundsException;
+use InvalidArgumentException;
 
 /**
  * Abstract implementation of List contract
@@ -41,28 +42,46 @@ abstract class AbstractList implements ListInterface
     }
     
     /**
-     * Appends to the tail of the list
      * @inheritDoc
+     * @throws InvalidArgumentException|OutOfBoundsException
      */
-    public function with(HashableInterface $payload): void
+    public function with(HashableInterface $payload, ?string $after = null): void
     {
         $hash = $payload->hash();
-        if (isset($this->i['hashes'][$hash])) {
+        if ($hash === $after) {
+            throw new InvalidArgumentException("`after` value equals to the hash for passed `payload`");
+        }
+        if ($this->known($hash)) {
             /* updates an existed */
-            $this->i['hashes'][$hash]->mutatePayload($payload);
+            $node = $this->i['hashes'][$hash];
+            $this->without($hash);
         } else {
-            /* appends a new to the tail */
+            /* appends a new */
             $node = $this->node->blueprinted();
-            $node->mutatePayload($payload);
-            if ($this->empty()) {
-                $this->i['head'] = $this->i['tail'] = $node;
+        }
+        $node->mutatePayload($payload);
+        if ($this->empty()) {
+            $this->i['head'] = $this->i['tail'] = $node;
+        } else {
+            if ($after === null) {
+                $sibling = $this->i['tail'];
             } else {
-                $node->mutatePrev($this->i['tail']);
-                $this->i['tail']->mutateNext($node);
+                if (!$this->known($after)) {
+                    throw new OutOfBoundsException("node with hash=`$after` is unknown");
+                }
+                $sibling = $this->i['hashes'][$after];
+            }
+            $node->mutatePrev($sibling);
+            $node->mutateNext($sibling->next());
+            if ($sibling->next()) {
+                $sibling->next()->mutatePrev($node);
+            } else {
                 $this->i['tail'] = $node;
             }
-            $this->i['hashes'][$hash] = $node;
+            $sibling->mutateNext($node);
+    
         }
+        $this->i['hashes'][$hash] = $node;
     }
     
     /**
