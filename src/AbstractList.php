@@ -51,9 +51,13 @@ abstract class AbstractList implements ListInterface
         if ($hash === $after) {
             throw new InvalidArgumentException("`after` value equals to the hash for passed `payload`");
         }
+        if ($this->known($hash) && !$after) {
+            $this->fetch($hash)->mutatePayload($payload);
+            return;
+        }
         if ($this->known($hash)) {
             /* updates an existed */
-            $node = $this->i['hashes'][$hash];
+            $node = $this->fetch($hash);
             $this->without($hash);
         } else {
             /* appends a new */
