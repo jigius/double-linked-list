@@ -121,7 +121,7 @@ abstract class AbstractList implements ListInterface
     /**
      * @inheritDoc
      */
-    abstract public function fetch(string $hash): HashableInterface;
+    abstract public function fetch(string $hash): NodeInterface;
     
     /**
      * @inheritDoc
@@ -135,7 +135,7 @@ abstract class AbstractList implements ListInterface
         if (!$this->known($hashOne) || !$this->known($hashTwo)) {
             throw new OutOfBoundsException();
         }
-        $t = $this->fetch($hashOne);
+        $t = $this->fetch($hashOne)->payload();
         $this->i['hashes'][$hashOne]->mutatePayload($this->i['hashes'][$hashTwo]->payload());
         $this->i['hashes'][$hashTwo]->mutatePayload($t);
         $nodeOne = $this->i['hashes'][$hashOne];

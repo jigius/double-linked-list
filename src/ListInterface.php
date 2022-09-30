@@ -45,9 +45,9 @@ interface ListInterface
     /**
      * Returns a value data with a defined hash
      * @param string $hash
-     * @return HashableInterface
+     * @return NodeInterface
      */
-    public function fetch(string $hash): HashableInterface;
+    public function fetch(string $hash): NodeInterface;
     
     /**
      * Returns the first node of the list
